@@ -1,0 +1,68 @@
+---
+
+- hosts: workstation
+  become: true
+  pre_tasks:
+  - name: Updating workstation (Archlinux-based)
+    tags: always,archup
+    community.general.pacman:
+        executable: pacman
+        extra_args: -Sy archlinux-keyring --noconfirm
+        upgrade: yes
+        upgrade_extra_args: --noconfirm
+        update_cache: yes
+    when: ansible_distribution == "Archlinux"
+
+#----------------------------------------------------
+- hosts: workstation
+  become: true
+  tasks:
+    - name: 
+      tags: install
+      community.general.pacman:
+          name:
+            #---------------------
+            # Virtual env install
+            - virt-manager
+            - qemu
+            - qemu-arch-extra
+            - libvirt
+            #---------------------
+            # Pipewire installl
+            - pipewire
+            - pipewire-alsa
+            - pipewire-docs
+            - pipewire-media-session
+            - pipewire-pulse
+            - pipewire-v4l2
+            - pipewire
+            - pipewire-x11-bell
+            - pipewire-zeroconf
+            - pavucontrol
+            - easyeffects
+            #---------------------
+            # Firewal
+            - ufw
+            - gufw
+            #---------------------
+            # Other packages
+            - nemo
+            - keepassxc
+            - vim
+            - xed
+            - nitrogen
+            - screengrab
+            - rofi
+            - light
+            - playerctl
+            - vlc
+            - arandr
+            - xournalpp
+            - openssh
+            - bat
+              # buka - aur
+            - feh
+            state: latest
+      when: ansible_distribution == "Archlinux"  
+
+#----------------------------------------------------
